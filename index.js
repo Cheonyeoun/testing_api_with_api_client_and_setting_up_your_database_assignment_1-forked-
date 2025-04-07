@@ -23,7 +23,7 @@ app.post('/students/above-threshold',async(req,res)=>{
   
   if (typeof threshold !== 'number') {
     return res.status(400).json({
-      message: 'Invalid threshold. Please provide a number.'
+      message: 'Invalid threshold. Please provide valid value in number.'
     });
   }
 
