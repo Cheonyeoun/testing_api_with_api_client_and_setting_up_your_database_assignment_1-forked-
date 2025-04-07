@@ -13,7 +13,7 @@ const studentsData = JSON.parse(rawData);
 
 
 app.get('/', (req, res) => {
-  res.sendFile(resolve(__dirname, 'pages/index.html'));
+  res.sendFile(path.resolve(__dirname, 'pages/index.html'));
 });
 
 app.post('/students/above-threshold',async(req,res)=>{
@@ -27,19 +27,14 @@ app.post('/students/above-threshold',async(req,res)=>{
     });
   }
 
-  const filteredStudents = studentsData
-    .map(student => {
-      const total = student.marks.reduce((sum, mark) => sum + mark, 0);
-      return { name: student.name, total };
-    })
+    const filteredStudents = studentsData
+      .filter(student => student.total > threshold)
+      .map(student => ({ name: student.name, total: student.total }));
 
-    .filter(student => student.total > threshold);
-
-  return res.json({
-    count: filteredStudents.length,
-    students: filteredStudents
-  });
-
+    return res.json({
+      count: filteredStudents.length,
+      students: filteredStudents
+    });
 }
   catch(error){
 
